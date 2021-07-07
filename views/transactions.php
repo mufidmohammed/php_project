@@ -41,11 +41,11 @@
                         <td><?= $transaction['description']; ?></td>
                         <td>
                             <?php if($transaction['amount'] > 0): ?>
-                                <span style="color: green"><?= $transaction['amount']; ?></span>
+                                <span style="color: green"><?= formatDollarAmount($transaction['amount']); ?></span>
                             <?php elseif($transaction['amount'] < 0): ?>
-                                <span style="color: red"><?= $transaction['amount']; ?></span>
+                                <span style="color: red"><?= formatDollarAmount($transaction['amount']); ?></span>
                             <?php else: ?>
-                                <?php $transaction['amount'] ?>
+                                <?php formatDollarAmount($transaction['amount']); ?>
                             <?php endif ?>
                         </td>
                     </tr>
