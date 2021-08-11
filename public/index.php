@@ -5,21 +5,16 @@ declare(strict_types = 1);
 $root = dirname(__DIR__) . DIRECTORY_SEPARATOR;
 
 define('APP_PATH', $root . 'app' . DIRECTORY_SEPARATOR);
-define('FILES_PATH', $root . 'transaction_files' . DIRECTORY_SEPARATOR);
 define('VIEWS_PATH', $root . 'views' . DIRECTORY_SEPARATOR);
+define('DB_PATH', $root . 'db_connect' . DIRECTORY_SEPARATOR);
 
-/* YOUR CODE (Instructions in README.md) */
-
+require DB_PATH . 'connect.php';
 require APP_PATH . 'App.php';
 
-$transactionFiles = getTransactionFiles(FILES_PATH);
-
-$transactions = [];
-
-foreach($transactionFiles as $file) {
-    $transactions = array_merge($transactions, getTransactions($file, 'extractTransaction'));
-}
+$transactions = getTransactions($conn);
 
 $totals = calculateTotals($transactions);
 
 require VIEWS_PATH . 'transactions.php';
+
+$conn -> close();

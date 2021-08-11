@@ -1,70 +1,98 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Transactions</title>
-        <style>
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                text-align: center;
-            }
-
-            table tr th, table tr td {
-                padding: 5px;
-                border: 1px #eee solid;
-            }
-
-            tfoot tr th, tfoot tr td {
-                font-size: 20px;
-            }
-
-            tfoot tr th {
-                text-align: right;
-            }
-        </style>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../templates/w3.css">
+        <link rel="stylesheet" href="../static/style.css">
+        <script src="../scripts/script.js"></script>
     </head>
     <body>
-        <table>
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Check #</th>
-                    <th>Description</th>
-                    <th>Amount</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach($transactions as $transaction): ?>
+        <div class="w3-container">
+            <h1 class="w3-green w3-center">Daily Sales tracker</h1>
+            <table>
+                <thead>
                     <tr>
-                        <td><?= $transaction['date']; ?></td>
-                        <td><?= $transaction['checkNumber']; ?></td>
-                        <td><?= $transaction['description']; ?></td>
-                        <td>
-                            <?php if($transaction['amount'] > 0): ?>
-                                <span style="color: green"><?= formatDollarAmount($transaction['amount']); ?></span>
-                            <?php elseif($transaction['amount'] < 0): ?>
-                                <span style="color: red"><?= formatDollarAmount($transaction['amount']); ?></span>
-                            <?php else: ?>
-                                <?php formatDollarAmount($transaction['amount']); ?>
-                            <?php endif ?>
-                        </td>
+                        <th>ID</th>
+                        <th>Product Name</th>
+                        <th>Amount</th>
+                        <th>Purchases</th>
+                        <th>Date</th>
                     </tr>
-                <?php endforeach ?>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th colspan="3">Total Income:</th>
-                    <td><?= formatDollarAmount($totals['income']); ?></td>
-                </tr>
-                <tr>
-                    <th colspan="3">Total Expense:</th>
-                    <td><?= formatDollarAmount($totals['expense']); ?></td>
-                </tr>
-                <tr>
-                    <th colspan="3">Net Total:</th>
-                    <td><?= formatDollarAmount($totals['net']); ?></td>
-                </tr>
-            </tfoot>
-        </table>
+                </thead>
+                <tbody>
+                    <?php foreach($transactions as $transaction): ?>
+                    <?php $id = $transaction['id']; ?>
+                        <tr>
+                            <td><?= $id; ?></td>
+                            <td><?= $transaction['product_name'] ?></td>
+                            <td>
+                                <span class="prices" style="color: green">
+                                    <?= formatDollarAmount($transaction['price']); ?>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="purchases" id=<?= $id; ?> >0</span>
+                                <div class="modifier">
+                                    <span class="increment-btn" onclick=increment(<?= $id; ?>)>+</span>
+                                    <span class="decrement-btn" onclick=decrement(<?= $id; ?>)>-</span>
+                                </div>
+                            </td>
+                            <td><?= $transaction['date']; ?></td>
+                        </tr>
+                    <?php endforeach ?>
+                    <tr>
+                        <td>Total Sales</td>
+                        <td id="totalSales" colspan="4">0</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="w3-button w3-teal" onclick="document.getElementById('add').style.display='inline-block'">Add</button>
+            <div id="add" class="w3-modal">
+                <div class="w3-modal-content">
+                    <header class="w3container w3-teal">
+                        <span onclick="document.getElementById('add').style.display='none'" class="w3-button w3-display-topright">&times</span>
+                        <h2 class="w3-teal w3-padding">Add Product</h2>
+                    </header>
+                    <div class="w3-container">
+                        <form action="../app/add.php" method="POST">
+                            <div class="w3-padding-small">
+                                <label>Product Name</label>
+                                <input type="text" name="product_name" value="" required />
+                            </div>
+                            <div class="w3-padding-small">
+                                <label style="margin-right:70px">Price</label>
+                                <input type="number" name="price" step=".01" value="" required />
+                            </div>
+                            <div class="w3-margin">
+                                <input type="submit" name="Add" value="submit">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <button class="w3-button w3-red" onclick="document.getElementById('delete').style.display='inline-block'">Delete</button>
+            <div id="delete" class="w3-modal">
+                <div class="w3-modal-content">
+                    <header class="w3container w3-teal">
+                        <span onclick="document.getElementById('delete').style.display='none'" class="w3-button w3-display-topright">&times</span>
+                        <h2 class="w3-red w3-padding">Delete</h2>
+                    </header>
+                    <div class="w3-container">
+                        <form action="../app/delete.php" method="POST">
+                            <div class="w3-padding-small">
+                                <label style="margin-right:70px">Enter product ID: </label>
+                                <input type="number" name="id" value="" required />
+                            </div>
+                            <div class="w3-button">
+                                <input type="submit" name="delete" value="delete">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

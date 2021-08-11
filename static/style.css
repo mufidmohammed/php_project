@@ -1,0 +1,43 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+table tr th, table tr td {
+    padding: 5px;
+    border: 1px #eee solid;
+}
+
+tfoot tr th, tfoot tr td {
+    font-size: 20px;
+}
+
+tfoot tr th {
+    text-align: right;
+}
+
+.modifier {
+    display: inline-block;
+    float: right;
+    color: #fff;
+    font-weight: bold;
+}
+
+.increment-btn {
+    margin: 5px 2px;
+    padding: 4px 8px;
+    background-color: green;
+    border: 1px groove green;
+}
+
+.increment-btn, .decrement-btn:hover {
+    cursor: pointer;
+}
+
+.decrement-btn {
+    margin: 5px 2px;
+    padding: 4px 10px;
+    background-color: red;
+    border: 1px groove red;
+}
